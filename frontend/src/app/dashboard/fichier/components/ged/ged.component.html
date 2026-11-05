@@ -1,0 +1,48 @@
+<form style="padding-top: 15px;" class="form-group" [formGroup]="GedForm">
+    <fieldset class="fieldset-container">
+        <legend class="legend-title">{{action == 'create'? 'Ajouter' : 'Modifier'}} GED pour l'article <b>{{selectedArticle?.identifiant}} - {{selectedArticle?.libelleFR}}</b></legend>
+        <!-- <mat-form-field class="field" class="field" appearance="fill">
+            <mat-label>Nom du fichier</mat-label>
+            <input formControlName="fileName" matInput #input>
+        </mat-form-field> -->
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Designation</mat-label>
+            <input formControlName="libelle" matInput #input>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Observation</mat-label>
+            <input formControlName="observation" matInput #input>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Nom du fichier</mat-label>
+            <input formControlName="fileName" matInput #input>
+            <input
+                type="file"
+                #fileInput
+                (change)="onFileSelected($event)"
+                style="display: none"
+            />
+
+            <!-- Button to trigger the file input click event -->
+            <button mat-icon-button matSuffix type="button" (click)="fileInput.click()">
+                <mat-icon>attach_file</mat-icon>
+            </button>
+        </mat-form-field>
+
+    </fieldset>
+    <div class="action-buttons">
+        <button class="btn" type="button" (click)="clearFields()" mat-raised-button>Nouveau</button>
+        <button class="btn btn-add" type="button" (click)="onSubmit()" [disabled]="!GedForm.valid" mat-raised-button>{{action == 'create'? 'Sauvegarder' : 'Modifier'}}</button>
+    </div>
+</form>
+<div class="table-container">
+    <soma-table style="flex: 1;" [dataSource]="dataSource" [resultsLength]="resultsLength" [columns]="columns" [actions]="actions" [displayedColumns]="displayedColumns"
+            [hidePagination]="true" (tableChanges)="onTableChanges($event)" (onActionClicked)="onActionClicked($event)">
+    </soma-table>
+    <div style="flex: 1; width: 100%; border: 2px dashed #DCE0E7 !important; height: auto !important;">
+        <img  *ngIf="imageUrl" [src]="imageUrl" class="image">
+    </div>
+</div>

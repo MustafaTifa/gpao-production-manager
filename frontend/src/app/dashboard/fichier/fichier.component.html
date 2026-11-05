@@ -1,0 +1,38 @@
+<!-- <div style="display: flex;flex-direction: row;width: 100%;position: sticky;">
+    <div style="flex: 1 1 auto" class="menu-active">
+        <left-menu ></left-menu>
+    </div>
+
+    <div fxFlex="1 1 100%" class="main-content">
+        <mat-card id="mainCard" class="adminitration-main-card">
+            <mat-card-content>
+                <router-outlet></router-outlet>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div> -->
+<!-- <mat-drawer-container style="background-color: #eff2f5 !important;height: calc(100% - 64px);" autosize>
+    <mat-drawer-content style="display: flex;flex-direction: row;gap: 15px; height: 100%;">
+        <div style="transition: width 0.3s ease;">
+            <left-menu></left-menu>
+        </div>
+        <mat-card id="mainCard" style="flex-grow: 1; border-radius: 0px;">
+            <mat-card-content>
+                <router-outlet></router-outlet>
+            </mat-card-content>
+        </mat-card>
+    </mat-drawer-content>
+</mat-drawer-container> -->
+
+<div class="main-container">
+    <div class="left-menu" style="transition: width 0.3s ease;">
+        <left-menu></left-menu>
+    </div>
+    <div class="content">
+        <div class="scrollable-card">
+            <!-- <mat-card-content> -->
+                <router-outlet></router-outlet>
+            <!-- </mat-card-content> -->
+        </div>
+    </div>
+</div>

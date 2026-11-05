@@ -1,0 +1,31 @@
+.toolbar {
+    background-color: #d7e3ff;
+}
+
+.example-container {
+    width: auto;
+    height: 100%;
+    position: relative;
+    //border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.example-sidenav-content {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.example-sidenav {
+    padding: 20px;
+}
+
+.link-name-top:hover, .link-name-top::selection, .panel-top-active {
+    background-color: #C1D5F8;
+    border-radius: 30px;
+}
+
+.link-name-top {
+    color: #005cbb;
+    font-size: large;
+}

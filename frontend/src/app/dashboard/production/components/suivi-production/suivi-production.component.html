@@ -1,0 +1,139 @@
+<div class="suivi-production-container">
+    <!-- Header -->
+    <div class="header-section">
+        <div class="title-section">
+            <h1>Bons de Salaire - Suivi Production</h1>
+            <p class="subtitle">Suivi de production et gestion des temps de travail</p>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <form class="filter-section" [formGroup]="filterForm">
+        <mat-form-field class="filter-field" appearance="fill">
+            <mat-label>Date du</mat-label>
+            <input formControlName="startDate" matInput [matDatepicker]="startPicker">
+            <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+            <mat-datepicker #startPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="filter-field" appearance="fill">
+            <mat-label>au</mat-label>
+            <input formControlName="endDate" matInput [matDatepicker]="endPicker">
+            <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+            <mat-datepicker #endPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="filter-field workstation-field" appearance="fill">
+            <mat-label>Poste de travail</mat-label>
+            <input type="text" matInput formControlName="workstation" [matAutocomplete]="autoWorkstation">
+            <mat-autocomplete #autoWorkstation="matAutocomplete" [displayWith]="displayFn">
+                <mat-option *ngFor="let ws of workstationOptions | async" [value]="ws">
+                    {{ws.codeWorkstation}} - {{ws.libelle}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <div class="filter-buttons">
+            <button mat-raised-button color="primary" (click)="loadData()">
+                <mat-icon>filter_list</mat-icon> Filtrer
+            </button>
+            <button mat-raised-button class="export-btn" (click)="exportPdf()">
+                <mat-icon>picture_as_pdf</mat-icon> Exporter PDF
+            </button>
+        </div>
+    </form>
+
+    <!-- Stats Summary -->
+    <div class="stats-bar">
+        <div class="stat-item">
+            <mat-icon>people</mat-icon>
+            <span class="stat-value">{{totalWorkers}}</span>
+            <span class="stat-label">Travailleurs</span>
+        </div>
+        <div class="stat-item">
+            <mat-icon>assignment</mat-icon>
+            <span class="stat-value">{{totalTasks}}</span>
+            <span class="stat-label">Taches</span>
+        </div>
+        <div class="stat-item">
+            <mat-icon>schedule</mat-icon>
+            <span class="stat-value">{{formatHours(totalHours)}}</span>
+            <span class="stat-label">Total</span>
+        </div>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="loading-container">
+        <!-- <mat-spinner diameter="40"></mat-spinner> -->
+        <span>Chargement...</span>
+    </div>
+
+    <!-- Worker Groups -->
+    <div class="workers-container" *ngIf="!loading">
+        <div *ngIf="travailleurGroups.length === 0" class="no-data">
+            <mat-icon>info</mat-icon>
+            <span>Aucune donnee trouvee pour la periode selectionnee</span>
+        </div>
+
+        <mat-card *ngFor="let group of travailleurGroups" class="worker-card">
+            <mat-card-header (click)="toggleGroup(group)" class="worker-header">
+                <div class="worker-avatar" mat-card-avatar>
+                    {{getInitials(group.travailleurLibelle)}}
+                </div>
+                <mat-card-title>{{group.travailleurLibelle}}</mat-card-title>
+                <mat-card-subtitle>{{group.tasks.length}} taches - {{formatHours(group.totalHours)}}</mat-card-subtitle>
+                <mat-icon class="expand-icon">{{group.expanded ? 'expand_less' : 'expand_more'}}</mat-icon>
+            </mat-card-header>
+
+            <mat-card-content *ngIf="group.expanded">
+                <table class="tasks-table">
+                    <thead>
+                        <tr>
+                            <th>N Ordre de Fabrication</th>
+                            <th>Operation effectuee</th>
+                            <th>Poste de travail</th>
+                            <th>Temps effectif</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let task of group.tasks">
+                            <td>{{task.numberOF}}</td>
+                            <td>{{task.operation}}</td>
+                            <td>{{task.workstationLibelle}}</td>
+                            <td>{{task.totalTempEffectif}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr class="total-row">
+                            <td colspan="3" class="total-label">Total heures</td>
+                            <td class="total-value">{{formatHours(group.totalHours)}}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <!-- Global Summary -->
+    <!-- <div class="global-summary" *ngIf="!loading && travailleurGroups.length > 0">
+        <h2>Recapitulatif Global</h2>
+        <div class="summary-grid">
+            <div class="summary-item">
+                <span class="summary-label">Periode</span>
+                <span class="summary-value">{{formatDate(filterForm.get('startDate')?.value)}} au {{formatDate(filterForm.get('endDate')?.value)}}</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Travailleurs</span>
+                <span class="summary-value">{{totalWorkers}}</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Taches</span>
+                <span class="summary-value">{{totalTasks}}</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Heures totales</span>
+                <span class="summary-value highlight">{{formatHours(totalHours)}}</span>
+            </div>
+        </div>
+    </div> -->
+</div>

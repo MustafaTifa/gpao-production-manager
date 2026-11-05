@@ -1,0 +1,36 @@
+.stock-table {
+  width: 100%;
+  min-width: 620px;
+}
+
+.col-center {
+  text-align: center;
+}
+
+tr.manquant td {
+  background-color: #ffcccc;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  padding: 32px;
+  color: #666;
+}
+
+.error-message {
+  color: #c62828;
+  padding: 16px;
+}
+
+.empty-message {
+  text-align: center;
+  padding: 24px;
+  color: #666;
+}
+
+mat-dialog-content {
+  min-width: 640px;
+  max-height: 70vh;
+  overflow-y: auto;
+}

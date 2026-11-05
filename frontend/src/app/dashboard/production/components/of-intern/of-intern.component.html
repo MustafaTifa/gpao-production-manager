@@ -1,0 +1,89 @@
+<form style="padding-top: 15px;" class="form-group" [formGroup]="ofInternForm">
+    <fieldset class="fieldset-container">
+        <legend class="legend-title">{{action == 'create'? 'Ajouter' : 'Modifier'}} OF Interne </legend>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>N° OF</mat-label>
+            <input formControlName="numberOF" matInput #input>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Date</mat-label>
+            <input formControlName="date" matInput [matDatepicker]="picker" #input>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Article</mat-label>
+            <input [readonly]="true" matInput (keydown)="disableInput($event)" (click)="disableInput($event)"
+                type="text" formControlName="article" [matAutocomplete]="autoarticle">
+            <button matSuffix mat-icon-button type="button" (click)="showArticles()">
+                <mat-icon>add_circle</mat-icon>
+            </button>
+            <mat-autocomplete #autoarticle="matAutocomplete" [displayWith]="displayFn">
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Quentité</mat-label>
+            <input formControlName="quantity" matInput #input>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Délai de réalisation</mat-label>
+            <input formControlName="delai" matInput #input>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Bon de commande</mat-label>
+            <input formControlName="bonDeCommande" matInput #input>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Project OF</mat-label>
+            <input formControlName="projectOf" matInput #input>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>RC</mat-label>
+            <input formControlName="rc" matInput #input>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Observation</mat-label>
+            <input formControlName="observation" matInput #input>
+        </mat-form-field>
+
+    </fieldset>
+    <div class="action-buttons">
+        <button mat-raised-button [disabled]="disablePrint" [matMenuTriggerFor]="menu">
+            <mat-icon>print</mat-icon>
+            Imprimer
+        </button>
+        <mat-menu #menu="matMenu">
+            <button type="button" (click)="print('of')" mat-menu-item>
+                <mat-icon>print</mat-icon>
+                Imprimer OF Nomenclature
+            </button>
+            <button type="button" (click)="printGamme()" mat-menu-item>
+                <mat-icon>print</mat-icon>
+                Imprimer OF Gamme
+            </button>
+            <button type="button" (click)="print('cc-64')" mat-menu-item>
+                <mat-icon>print</mat-icon>
+                Imprimer CC 64
+            </button>
+        </mat-menu>
+        <button class="btn" type="button" (click)="clearFields()" mat-raised-button>Nouveau</button>
+        <button class="btn btn-add" type="button" (click)="onSubmit()" [disabled]="!ofInternForm.valid"
+            mat-raised-button>{{action == 'create'? 'Sauvegarder' : 'Modifier'}}</button>
+    </div>
+</form>
+<div class="table-container">
+    <soma-table [dataSource]="dataSource" [resultsLength]="resultsLength" [columns]="columns" [actions]="actions"
+        [displayedColumns]="displayedColumns" [hidePagination]="true" (tableChanges)="onTableChanges($event)"
+        (onActionClicked)="onActionClicked($event)">
+
+    </soma-table>
+</div>

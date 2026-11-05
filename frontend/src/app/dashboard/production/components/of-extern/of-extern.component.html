@@ -1,0 +1,48 @@
+<form style="padding-top: 15px;" class="form-group" [formGroup]="ofExternForm">
+    <fieldset class="fieldset-container">
+        <legend class="legend-title">{{action == 'create'? 'Ajouter' : 'Modifier'}} OF Externe </legend>
+        
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>N° OF</mat-label>
+            <input formControlName="numberOF" matInput #input>
+        </mat-form-field>
+        
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Date</mat-label>
+            <input formControlName="date" matInput [matDatepicker]="picker" #input>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Délai de réalisation</mat-label>
+            <input formControlName="delai" matInput #input>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Bon de commande</mat-label>
+            <input formControlName="bonDeCommande" matInput #input>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Observation</mat-label>
+            <input formControlName="observation" matInput #input>
+        </mat-form-field>
+
+    </fieldset>
+    <div class="action-buttons">
+        <button type="button" [disabled]="disablePrint" (click)="printOF()" mat-raised-button>
+            <mat-icon>print</mat-icon>
+            Imprimer OF Extern
+        </button>
+        <button class="btn" type="button" (click)="clearFields()" mat-raised-button>Nouveau</button>
+        <button class="btn btn-add" type="button" (click)="onSubmit()" [disabled]="!ofExternForm.valid" mat-raised-button>{{action == 'create'? 'Sauvegarder' : 'Modifier'}}</button>
+    </div>
+</form>
+<div class="table-container">
+    <soma-table [dataSource]="dataSource" [resultsLength]="resultsLength" [columns]="columns" [actions]="actions"
+        [displayedColumns]="displayedColumns" [hidePagination]="true" (tableChanges)="onTableChanges($event)"
+        (onActionClicked)="onActionClicked($event)">
+
+    </soma-table>
+</div>

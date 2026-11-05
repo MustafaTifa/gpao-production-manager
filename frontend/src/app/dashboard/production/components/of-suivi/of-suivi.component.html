@@ -1,0 +1,59 @@
+<form style="padding-top: 15px;" class="form-group" [formGroup]="ofInternForm">
+    <fieldset class="fieldset-container">
+        <legend class="legend-title">OF </legend>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>N° OF</mat-label>
+            <input formControlName="numberOF" (keydown)="getOF($event)" matInput #input>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Date</mat-label>
+            <input formControlName="date" matInput [matDatepicker]="picker" #input>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Article</mat-label>
+            <input matInput formControlName="article" [matAutocomplete]="autoarticle">
+            <mat-autocomplete #autoarticle="matAutocomplete" [displayWith]="displayFn.bind(this,'article')">
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Quentité</mat-label>
+            <input formControlName="quantity" matInput #input>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Délai de réalisation</mat-label>
+            <input formControlName="delai" matInput #input>
+        </mat-form-field>
+
+    </fieldset>
+</form>
+
+<div class="action-buttons-print">
+    <div class="group-button">
+        <button style="background-color: #F0F0F0;" type="button" (click)="addSupPieces()" [disabled]="!dataSource || !article" mat-raised-button>Pièces supplémentaires</button>
+        <button style="width: 175px;" class="btn btn-add" type="button" (click)="navigateToAddOperation()" [disabled]="!ofId" mat-raised-button>
+            <mat-icon>add</mat-icon> Ajouter opération
+        </button>
+    </div>
+    <div class="group-button">
+        <button style="background-color: #2196F3; color: white;" type="button" (click)="printGamme()" [disabled]="!dataSource || !article" mat-raised-button>
+            <mat-icon>print</mat-icon> Gamme
+        </button>
+        <button style="background-color: #2196F3; color: white;" type="button" (click)="printBon()" [disabled]="!dataSource || !article" mat-raised-button>
+            <mat-icon>print</mat-icon> Bon de salaire
+        </button>
+    </div>
+</div>
+
+<div class="table-container">
+    <soma-table [dataSource]="dataSource" [resultsLength]="resultsLength" [columns]="columns" [actions]="actions"
+        [displayedColumns]="displayedColumns" [hidePagination]="true" (tableChanges)="onTableChanges($event)"
+        (onActionClicked)="onActionClicked($event)">
+    </soma-table>
+</div>

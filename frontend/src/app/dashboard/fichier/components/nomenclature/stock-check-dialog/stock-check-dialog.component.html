@@ -1,0 +1,55 @@
+<h2 mat-dialog-title>Vérification du Stock — Nomenclature</h2>
+
+<mat-dialog-content>
+
+  <div *ngIf="loading" class="loading-container">
+    <span>Chargement en cours...</span>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <table *ngIf="!loading && !error" mat-table [dataSource]="stockItems" class="stock-table mat-elevation-z2">
+
+    <ng-container matColumnDef="reference">
+      <th mat-header-cell *matHeaderCellDef>Référence</th>
+      <td mat-cell *matCellDef="let item">{{ item.reference }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="designation">
+      <th mat-header-cell *matHeaderCellDef>Désignation</th>
+      <td mat-cell *matCellDef="let item">{{ item.designation }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="quantiteDemandee">
+      <th mat-header-cell *matHeaderCellDef class="col-center">Qté demandée</th>
+      <td mat-cell *matCellDef="let item" class="col-center">{{ item.quantiteDemandee }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="quantiteStock">
+      <th mat-header-cell *matHeaderCellDef class="col-center">Qté en stock</th>
+      <td mat-cell *matCellDef="let item" class="col-center">{{ item.quantiteStock }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="difference">
+      <th mat-header-cell *matHeaderCellDef class="col-center">Différence</th>
+      <td mat-cell *matCellDef="let item" class="col-center">{{ item.difference }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+        [class.manquant]="isManquant(row)">
+    </tr>
+
+  </table>
+
+  <div *ngIf="!loading && !error && stockItems.length === 0" class="empty-message">
+    Aucun article à vérifier.
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button class="btn" type="button" mat-dialog-close mat-raised-button>Fermer</button>
+</mat-dialog-actions>

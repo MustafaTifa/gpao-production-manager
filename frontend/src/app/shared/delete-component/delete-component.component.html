@@ -1,0 +1,8 @@
+<div class="container">
+    <h2><b>{{ data.title }}</b></h2>
+    <h4>{{data.description}}</h4>
+    <div class="buttons">
+        <button class="btn" type="button" mat-dialog-close mat-raised-button>Annuler</button>
+        <button style="background-color: #bb2d00;" class="btn btn-add" type="button" [mat-dialog-close]="confirmation" mat-raised-button>Supprimer</button>
+    </div>
+</div>

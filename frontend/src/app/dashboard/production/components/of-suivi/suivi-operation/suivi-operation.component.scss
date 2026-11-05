@@ -1,0 +1,41 @@
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.travailleurs-table {
+    width: 100%;
+    margin-top: 16px;
+    border-collapse: collapse;
+
+    th, td {
+        padding: 8px 12px;
+        text-align: left;
+        border-bottom: 1px solid #e0e0e0;
+        font-size: 13px;
+    }
+
+    th {
+        background-color: #f5f5f5;
+        font-weight: 600;
+        color: #555;
+    }
+
+    tr:hover td {
+        background-color: #fafafa;
+    }
+
+    tr.selected td {
+        background-color: #e3f2fd;
+    }
+}
+
+.fieldset-container-tab{
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding-top: 25px;
+    flex: 1;
+}

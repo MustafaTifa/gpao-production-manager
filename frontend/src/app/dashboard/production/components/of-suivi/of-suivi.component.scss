@@ -1,0 +1,11 @@
+.action-buttons-print {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.group-button {
+    display: flex;
+    gap: 20px; 
+}

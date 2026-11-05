@@ -1,0 +1,177 @@
+<div style="padding: 15px;">
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+        <button type="button" mat-icon-button (click)="goBack()">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <h2 style="margin: 0;">{{action === 'create' ? 'Nouvelle opération' : 'Modifier opération'}}</h2>
+    </div>
+
+    <div *ngIf="article" style="display: flex;justify-content: space-between;align-items: baseline; margin-bottom: 10px; color: #555; font-size: 14px;">
+        <div>
+            <strong>OF:</strong> {{ofNumber}} &nbsp;|&nbsp;
+            <strong>Article:</strong> {{article?.identifiant}} - {{article?.libelleFR}}
+        </div>
+        <div class="action-buttons">
+            <button class="btn btn-add" type="button" (click)="onSubmit()" [disabled]="!suiviForm.valid || travailleursTable.length === 0"
+                mat-raised-button>
+                {{action == 'create' ? 'Sauvegarder' : 'Modifier'}}
+            </button>
+        </div>
+    </div>
+
+    <form class="form-group" [formGroup]="suiviForm">
+        <mat-tab-group mat-align-tabs="start">
+
+            <mat-tab label="Opérations">
+                <div class="fieldset-container-tab">
+                    <mat-form-field class="field" appearance="fill">
+                        <mat-label>POS</mat-label>
+                        <input formControlName="pos" matInput #input>
+                    </mat-form-field>
+
+                    <mat-form-field class="field" appearance="fill">
+                        <mat-label>Opération</mat-label>
+                        <input formControlName="operation" matInput #input>
+                    </mat-form-field>
+
+                    <mat-form-field class="field" appearance="fill">
+                        <mat-label>Temp d'éxécution</mat-label>
+                        <input formControlName="executionTime" matInput #input>
+                    </mat-form-field>
+
+                    <mat-form-field class="field" appearance="fill">
+                        <mat-label>Temps de préparation</mat-label>
+                        <input formControlName="preparationTime" matInput type="number" #input>
+                    </mat-form-field>
+
+                    <mat-form-field class="field" appearance="fill">
+                        <mat-label>Poste de travail</mat-label>
+                        <input type="text" matInput formControlName="idWorkstation" [matAutocomplete]="auto">
+                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this,'workstation')">
+                            <mat-option *ngFor="let workstation of workstationOptions | async" [value]="workstation.id">
+                                {{workstation.codeWorkstation}} - {{workstation.libelle}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+
+                    <mat-form-field class="field" appearance="fill">
+                        <mat-label>Liste des articles</mat-label>
+                        <input [readonly]="true" matInput (keydown)="disableInput($event)"
+                            (click)="disableInput($event)" type="text" formControlName="idsArticles"
+                            [matAutocomplete]="autoarticles">
+                        <button matSuffix mat-icon-button type="button" (click)="showArticles()">
+                            <mat-icon>add_circle</mat-icon>
+                        </button>
+                        <mat-autocomplete #autoarticles="matAutocomplete"
+                            [displayWith]="displayFn.bind(this,'articles')">
+                        </mat-autocomplete>
+                    </mat-form-field>
+
+                    <mat-form-field class="field" appearance="fill">
+                        <mat-label>GS</mat-label>
+                        <input formControlName="gs" matInput #input>
+                    </mat-form-field>
+
+                    <mat-form-field class="field" appearance="fill">
+                        <mat-label>ST</mat-label>
+                        <input formControlName="rc" matInput #input>
+                    </mat-form-field>
+
+                    <mat-form-field class="field" appearance="fill">
+                        <mat-label>Observation</mat-label>
+                        <input formControlName="observation" matInput #input>
+                    </mat-form-field>
+
+                    <mat-form-field class="field" appearance="fill">
+                        <mat-label>Date début</mat-label>
+                        <input formControlName="startDate" matInput [matDatepicker]="startDatePicker">
+                        <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #startDatePicker></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field class="field" appearance="fill">
+                        <mat-label>Date fin</mat-label>
+                        <input formControlName="endDate" matInput [matDatepicker]="endDatePicker">
+                        <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #endDatePicker></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field style="width: 100%; display: block;" appearance="fill">
+                        <mat-label>Détail opération</mat-label>
+                        <textarea formControlName="operationDetail" matInput rows="8"></textarea>
+                    </mat-form-field>
+
+                </div>
+
+            </mat-tab>
+
+            <mat-tab label="Travailleurs">
+                <div [formGroup]="travailleurForm" style="padding-top: 15px;">
+                    <div class="fieldset-container-tab">
+                        <mat-form-field class="field" appearance="fill">
+                            <mat-label>Travailleur</mat-label>
+                            <input type="text" matInput formControlName="idTravailleur"
+                                [matAutocomplete]="autoTravailleur">
+                            <mat-autocomplete #autoTravailleur="matAutocomplete"
+                                [displayWith]="displayFn.bind(this,'travailleur')">
+                                <mat-option *ngFor="let worker of workersOptions | async" [value]="worker.id">
+                                    {{worker.codeTravailleur}} - {{worker.libelle}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+
+                        <mat-form-field class="field" appearance="fill">
+                            <mat-label>Quantité</mat-label>
+                            <input formControlName="quantite" matInput type="number">
+                        </mat-form-field>
+
+                        <mat-form-field class="field" appearance="fill">
+                            <mat-label>Temps effectif</mat-label>
+                            <input formControlName="tempEffectif" matInput type="number">
+                        </mat-form-field>
+
+                        <div style="flex: 1;" class="action-buttons">
+                            <button class="btn btn-add" type="button" (click)="saveTravailleur()"
+                                [disabled]="!travailleurForm.valid" mat-raised-button>
+                                {{editingIndex !== null ? 'Modifier' : 'Ajouter'}}
+                            </button>
+                            <button *ngIf="editingIndex !== null" class="btn" type="button"
+                                (click)="cancelEdit()" mat-raised-button>Annuler</button>
+                        </div>
+                    </div>
+
+                    <table class="travailleurs-table">
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Désignation</th>
+                                <th>Quantité</th>
+                                <th>Temps effectif</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of travailleursTable; let i = index"
+                                [class.selected]="editingIndex === i"
+                                (click)="selectTravailleur(row, i)" style="cursor: pointer;">
+                                <td>{{row.travailleur.codeTravailleur}}</td>
+                                <td>{{row.travailleur.libelle}}</td>
+                                <td>{{row.quantite}}</td>
+                                <td>{{row.tempEffectif}}</td>
+                                <td>
+                                    <button type="button" mat-icon-button color="warn" (click)="$event.stopPropagation(); removeTravailleur(i)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr *ngIf="travailleursTable.length === 0">
+                                <td colspan="5" style="text-align: center; color: #999; font-style: italic;">Aucun élément à afficher</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </mat-tab>
+
+        </mat-tab-group>
+    </form>
+</div>

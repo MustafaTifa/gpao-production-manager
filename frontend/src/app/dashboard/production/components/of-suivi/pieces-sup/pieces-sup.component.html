@@ -1,0 +1,40 @@
+<form style="padding-top: 15px;" class="form-group" [formGroup]="nomenclatureForm">
+    <fieldset class="fieldset-container">
+        <legend class="legend-title">{{action == 'create'? 'Ajouter' : 'Modifier'}} pièce supplémentaire</legend>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Article</mat-label>
+            <input [readonly]="true" matInput (keydown)="disableInput($event)" (click)="disableInput($event)"
+                type="text" formControlName="article" [matAutocomplete]="autoarticle">
+            <button matSuffix mat-icon-button type="button" (click)="showArticles()">
+                <mat-icon>add_circle</mat-icon>
+            </button>
+            <mat-autocomplete #autoarticle="matAutocomplete" [displayWith]="displayFn">
+                <!-- <mat-option *ngFor="let sousGroupe of sousGroupeOptions| async" [value]="sousGroupe">{{sousGroupe.codeSousGroup}} - {{sousGroupe.libelle}}</mat-option> -->
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Quentité</mat-label>
+            <input formControlName="quantity" matInput #input>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Position</mat-label>
+            <input formControlName="pos" matInput #input>
+        </mat-form-field>
+
+    </fieldset>
+    <div class="action-buttons">
+        <button class="btn" type="button" (click)="clearFields()" mat-raised-button>Nouveau</button>
+        <button class="btn-add" type="button" (click)="onSubmit()" [disabled]="!nomenclatureForm.valid"
+            mat-raised-button>{{action == 'create'? 'Ajouter Article' : 'Modifier Quentité'}}</button>
+    </div>
+</form>
+<div class="table-container">
+    <soma-table [dataSource]="dataSource" [resultsLength]="resultsLength" [columns]="columns" [actions]="actions"
+        [displayedColumns]="displayedColumns" [hidePagination]="true" (tableChanges)="onTableChanges($event)"
+        (onActionClicked)="onActionClicked($event)">
+
+    </soma-table>
+</div>

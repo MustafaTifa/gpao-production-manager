@@ -1,0 +1,58 @@
+<div *ngIf="displayLoader" class="overly">
+    <div class="loader"></div>
+</div>
+<form style="padding-top: 15px;" class="form-group" [formGroup]="ofForm">
+    <div style="display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: space-between;
+        padding-bottom: 20px;">
+        <legend class="legend-title">
+            <button (click)="goBack()" mat-icon-button>
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            Ajouter des Pièces unitaire pour l'OF n° <b>{{numberOF}}</b>
+        </legend>
+
+        <div class="action-buttons">
+            <button class="btn" type="button" (click)="clearFields()" mat-raised-button>Nouveau</button>
+            <button class="btn btn-add" type="button" (click)="showDetailsTmpr()" [disabled]="!ofForm.valid"
+                mat-raised-button>{{action == 'create'? 'Sauvegarder' : 'Modifier'}}</button>
+        </div>
+    </div>
+
+    <fieldset class="fieldset-container">
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Pieces unitaire</mat-label>
+            <input [readonly]="true" matInput (keydown)="disableInput($event)" (click)="disableInput($event)"
+                type="text" formControlName="article" [matAutocomplete]="autoarticle">
+            <button matSuffix mat-icon-button type="button" (click)="showArticles()">
+                <mat-icon>add_circle</mat-icon>
+            </button>
+            <mat-autocomplete #autoarticle="matAutocomplete" [displayWith]="displayFn">
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Quentité</mat-label>
+            <input formControlName="quantity" matInput #input>
+            <mat-error>
+                valeur non valide
+            </mat-error>
+        </mat-form-field>
+
+        <button *ngIf="details.length > 0" (click)="showDetailsTmpr()" class="btn-detail" type="button" mat-fab matTooltip="Afficher détail">
+            <mat-icon>list_alt</mat-icon>
+        </button>
+
+    </fieldset>
+
+</form>
+<div class="table-container">
+    <soma-table [dataSource]="dataSource" [resultsLength]="resultsLength" [columns]="columns" [actions]="actions"
+        [displayedColumns]="displayedColumns" [hidePagination]="false" (tableChanges)="onTableChanges($event)"
+        (onActionClicked)="onActionClicked($event)">
+
+    </soma-table>
+</div>

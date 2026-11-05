@@ -1,0 +1,67 @@
+<form style="padding-top: 15px;" class="form-group" [formGroup]="nomenclatureForm">
+    <fieldset class="fieldset-container">
+        <legend class="legend-title">{{action == 'create'? 'Ajouter' : 'Modifier'}} Nomenclature pour l'article <b>{{selectedArticle?.identifiant}} - {{selectedArticle?.libelleFR}}</b></legend>
+        
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Article</mat-label>
+            <input [readonly]="true" matInput
+                (keydown)="disableInput($event)"
+                (click)="disableInput($event)"
+                type="text" 
+                formControlName="article" [matAutocomplete]="autoarticle">
+            <button matSuffix mat-icon-button type="button" (click)="showArticles()">
+                <mat-icon>add_circle</mat-icon>
+            </button>
+            <mat-autocomplete #autoarticle="matAutocomplete" [displayWith]="displayFn">
+                <!-- <mat-option *ngFor="let sousGroupe of sousGroupeOptions| async" [value]="sousGroupe">{{sousGroupe.codeSousGroup}} - {{sousGroupe.libelle}}</mat-option> -->
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Quentité</mat-label>
+            <input formControlName="quantity" matInput #input>
+            <mat-error>
+                valeur non valide
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Position</mat-label>
+            <input formControlName="pos" matInput #input>
+        </mat-form-field>
+        
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Observation</mat-label>
+            <input formControlName="observation" matInput #input>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Version</mat-label>
+            <input formControlName="version" matInput #input>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Date MAJ</mat-label>
+            <input formControlName="lastModified" matInput #input>
+        </mat-form-field>
+    </fieldset>
+    <div class="action-buttons">
+        <button type="button" [disabled]="disablePrint" (click)="printNomenclature()" mat-raised-button>
+            <mat-icon>print</mat-icon>
+            Imprimer Nomenclature
+        </button>
+        <button type="button" [disabled]="!dataSource || dataSource.length === 0" (click)="verifierStock()" mat-raised-button class="btn-stock">
+            <mat-icon>inventory</mat-icon>
+            Vérifier Stock
+        </button>
+        <button class="btn" type="button" (click)="clearFields()" mat-raised-button>Nouveau</button>
+        <button class="btn btn-add" type="button" (click)="onSubmit()" [disabled]="!nomenclatureForm.valid" mat-raised-button>{{action == 'create'? 'Sauvegarder' : 'Modifier'}}</button>
+    </div>
+</form>
+<div class="table-container">
+    <soma-table [dataSource]="dataSource" [resultsLength]="resultsLength" [columns]="columns" [actions]="actions"
+        [displayedColumns]="displayedColumns" [hidePagination]="true" (tableChanges)="onTableChanges($event)"
+        (onActionClicked)="onActionClicked($event)">
+
+    </soma-table>
+</div>

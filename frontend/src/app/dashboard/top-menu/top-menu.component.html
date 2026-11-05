@@ -1,0 +1,43 @@
+<mat-toolbar class="toolbar">
+    <div style="display: flex;flex-direction: row;padding-right: 50px;gap: 15px;">
+        <!-- (click)="drawer.toggle()" -->
+        <button (click)="forceToggleLeftMenu()" mat-icon-button class="example-icon favorite-icon"
+            aria-label="Example icon-button with heart icon">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <img src="../assets/logo/logo.png" style="width: 250px;" />
+    </div>
+    <div style="display: flex; align-items: center; gap: 20px; flex-grow: 1; flex-direction: row;">
+        <div *ngFor="let link of links" [class.panel-top-active]="link.url === activeLinkGroupName">
+            <button mat-button class="link-name-top" href="javascript:void(0)" [routerLink]="['./' + link.url ]" (click)="onLinkClick(link)">{{ link.name }}</button>
+        </div>
+    </div>
+    <div>
+        <button mat-icon-button class="example-icon" aria-label="Paramètres"
+                *ngIf="isAdmin"
+                [matMenuTriggerFor]="settingsMenu">
+            <mat-icon>settings</mat-icon>
+        </button>
+        <mat-menu #settingsMenu="matMenu">
+            <button mat-menu-item [routerLink]="['/fichier/users']">
+                <mat-icon>manage_accounts</mat-icon>
+                <span>Gestion des utilisateurs</span>
+            </button>
+            <button mat-menu-item [routerLink]="['/fichier/roles']">
+                <mat-icon>admin_panel_settings</mat-icon>
+                <span>Gestion des rôles</span>
+            </button>
+        </mat-menu>
+
+        <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon"
+                [matMenuTriggerFor]="userMenu">
+            <mat-icon>account_circle</mat-icon>
+        </button>
+        <mat-menu #userMenu="matMenu">
+            <button mat-menu-item (click)="logout()">
+                <mat-icon>logout</mat-icon>
+                <span>Déconnecter</span>
+            </button>
+        </mat-menu>
+    </div>
+</mat-toolbar>

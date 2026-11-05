@@ -1,0 +1,19 @@
+<div style="background-color: #151A30; height: 100%;" [class.page-expanded-menu]="!!(menuForceExpanded$ | async)">
+    <!-- <nav id="mainMenu"></nav> -->
+    <div class="link-icons-box" *ngFor="let link of links" [routerLink]="['./' + link.url ]" (click)="onLinkClick(link)">
+        <div>
+
+            <mat-icon style="color: white;" *ngIf="link.icon" [class.panel-active]="link.url === activeLinkGroupName">
+                {{link.icon}}
+            </mat-icon>
+        </div>
+        <div  [ngStyle]="{'display': !!(menuForceExpanded$ | async) ? 'none' : 'flex' }">
+            <!-- (click)="onLinkClick(link)"
+                        [ngClass]="{'panel-active': isActive(link.url, link.exactLink, link.exact,link.link_def)}"
+                        [queryParams]="link.queryParams ? link.queryParams : {}" [routerLink]="['./' + link.url ]" -->
+            <p class="link-name">{{ link.name }}</p>
+        </div>
+    </div>
+    <!-- </nav> -->
+
+</div>

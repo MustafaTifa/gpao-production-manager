@@ -1,0 +1,91 @@
+<form style="padding-top: 15px;" class="form-group" [formGroup]="gammeForm">
+    <fieldset class="fieldset-container">
+        <legend class="legend-title">{{action == 'create'? 'Ajouter' : 'Modifier'}} des opérations pour l'article <b>{{selectedArticle?.identifiant}} - {{selectedArticle?.libelleFR}}</b></legend>
+        <mat-form-field class="field" class="field" appearance="fill">
+            <mat-label>POS</mat-label>
+            <input formControlName="pos" matInput #input>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Opération</mat-label>
+            <input formControlName="operation" matInput #input>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Temp d'éxécution</mat-label>
+            <input formControlName="executionTime" matInput #input>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Temps de préparation</mat-label>
+            <input formControlName="preparationTime" matInput type="number" #input>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Poste de travail</mat-label>
+            <input type="text" matInput formControlName="workstation" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this,'gamme')">
+                <mat-option *ngFor="let workstation of workstationOptions| async" [value]="workstation">{{workstation.codeWorkstation}} - {{workstation.libelle}}</mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Liste des articles</mat-label>
+            <input [readonly]="true" matInput
+                (keydown)="disableInput($event)"
+                (click)="disableInput($event)"
+                type="text" 
+                formControlName="articles" [matAutocomplete]="autoarticle">
+            <button matSuffix mat-icon-button type="button" (click)="showArticles()">
+                <mat-icon>add_circle</mat-icon>
+            </button>
+            <mat-autocomplete #autoarticle="matAutocomplete" [displayWith]="displayFn.bind(this,'article')">
+                <!-- <mat-option *ngFor="let sousGroupe of sousGroupeOptions| async" [value]="sousGroupe">{{sousGroupe.codeSousGroup}} - {{sousGroupe.libelle}}</mat-option> -->
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>ST</mat-label>
+            <input formControlName="rc" matInput #input>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>GS</mat-label>
+            <input formControlName="gs" matInput #input>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Observation</mat-label>
+            <input formControlName="observation" matInput #input>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Version</mat-label>
+            <input formControlName="version" matInput #input>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Date MAJ</mat-label>
+            <input formControlName="lastModified" matInput #input>
+        </mat-form-field>
+
+        <mat-form-field style="width: 100%; display: block;" appearance="fill">
+            <mat-label>Détail opération</mat-label>
+            <textarea formControlName="operationDetail" matInput rows="8"></textarea>
+        </mat-form-field>
+
+    </fieldset>
+    <div class="action-buttons">
+        <button type="button" [disabled]="disablePrint" (click)="printGamme()" mat-raised-button>
+            <mat-icon>print</mat-icon>
+            Imprimer gamme
+        </button>
+        <button class="btn" type="button" (click)="clearFields()" mat-raised-button>Nouveau</button>
+        <button class="btn btn-add" type="button" (click)="onSubmit()" [disabled]="!gammeForm.valid" mat-raised-button>{{action == 'create'? 'Sauvegarder' : 'Modifier'}}</button>
+    </div>
+</form>
+<div class="table-container">
+    <soma-table [dataSource]="dataSource" [resultsLength]="resultsLength" [columns]="columns" [actions]="actions" [displayedColumns]="displayedColumns"
+                [hidePagination]="true" (tableChanges)="onTableChanges($event)" (onActionClicked)="onActionClicked($event)">
+    </soma-table>
+</div>

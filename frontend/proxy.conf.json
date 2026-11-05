@@ -1,0 +1,11 @@
+{
+  "/api-stock": {
+    "target": "http://localhost:8089",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api-stock": ""
+    },
+    "logLevel": "debug"
+  }
+}

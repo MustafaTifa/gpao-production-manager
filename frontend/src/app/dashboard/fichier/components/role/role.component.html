@@ -1,0 +1,143 @@
+<h1>Gestion des rôles</h1>
+
+<div class="page-layout">
+
+  <!-- LEFT — Roles Table -->
+  <div class="table-container">
+    <mat-table [dataSource]="roles" class="roles-table">
+
+      <!-- No Column -->
+      <ng-container matColumnDef="index">
+        <mat-header-cell *matHeaderCellDef>No</mat-header-cell>
+        <mat-cell *matCellDef="let role; let i = index">{{ i + 1 }}</mat-cell>
+      </ng-container>
+
+      <!-- Nom du rôle Column -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef>Nom du rôle</mat-header-cell>
+        <mat-cell *matCellDef="let role">{{ role.name }}</mat-cell>
+      </ng-container>
+
+      <!-- Pages autorisées Column -->
+      <ng-container matColumnDef="permissions">
+        <mat-header-cell *matHeaderCellDef>Pages autorisées</mat-header-cell>
+        <mat-cell *matCellDef="let role">
+          <span
+            class="badge"
+            [matTooltip]="getPermissionNames(role)"
+            matTooltipPosition="above">
+            {{ role.permissions.length }} page(s)
+          </span>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+        <mat-cell *matCellDef="let role">
+          <button mat-icon-button color="primary" (click)="onEdit(role)" matTooltip="Modifier">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="onDelete(role.id)" matTooltip="Supprimer">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="rolesDisplayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: rolesDisplayedColumns;"></mat-row>
+    </mat-table>
+
+    <div *ngIf="isLoading" style="text-align: center; padding: 20px;">
+      Chargement...
+    </div>
+    <div *ngIf="!isLoading && roles.length === 0" style="text-align: center; padding: 20px; color: gray;">
+      Aucun rôle trouvé.
+    </div>
+  </div>
+
+  <!-- RIGHT — Role Form -->
+  <form class="form-group" [formGroup]="roleForm">
+    <fieldset class="fieldset-container">
+      <legend>{{ isEditMode ? 'Modifier' : 'Ajouter' }} un rôle</legend>
+
+      <mat-form-field class="field" appearance="fill" style="width: 100%;">
+        <mat-label>Nom du rôle</mat-label>
+        <input formControlName="name" matInput>
+        <mat-error *ngIf="roleForm.get('name').hasError('required')">
+          Le nom du rôle est requis
+        </mat-error>
+      </mat-form-field>
+
+      <div class="permissions-section">
+        <div class="permissions-header">
+          <div>
+            <span class="permissions-label">Accès aux pages</span>
+            <p class="permissions-sublabel">Sélectionnez les pages accessibles pour ce rôle</p>
+          </div>
+          <button mat-stroked-button type="button" (click)="areAllSelected() ? deselectAll() : selectAll()">
+            {{ areAllSelected() ? 'Tout désélectionner' : 'Tout sélectionner' }}
+          </button>
+        </div>
+
+        <mat-table [dataSource]="allPermissions" class="permissions-table">
+
+          <!-- Sélection Column -->
+          <ng-container matColumnDef="selection">
+            <mat-header-cell *matHeaderCellDef>Sélection</mat-header-cell>
+            <mat-cell *matCellDef="let permission">
+              <mat-checkbox
+                [checked]="isSelected(permission.id)"
+                (change)="togglePermission(permission.id, $event.checked)">
+              </mat-checkbox>
+            </mat-cell>
+          </ng-container>
+
+          <!-- Page Column -->
+          <ng-container matColumnDef="page">
+            <mat-header-cell *matHeaderCellDef>Page</mat-header-cell>
+            <mat-cell *matCellDef="let permission">
+              <mat-icon style="vertical-align: middle; margin-right: 8px; font-size: 18px;">{{ permission.icon }}</mat-icon>
+              {{ permission.name }}
+            </mat-cell>
+          </ng-container>
+
+          <!-- Route Column -->
+          <ng-container matColumnDef="route">
+            <mat-header-cell *matHeaderCellDef>Route</mat-header-cell>
+            <mat-cell *matCellDef="let permission">
+              <code class="route-code">{{ permission.route }}</code>
+            </mat-cell>
+          </ng-container>
+
+          <!-- Description Column -->
+          <ng-container matColumnDef="description">
+            <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
+            <mat-cell *matCellDef="let permission" class="muted-text">
+              {{ permission.description }}
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="permissionColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: permissionColumns;"></mat-row>
+        </mat-table>
+
+        <div class="permissions-footer">
+          <span class="primary-text">{{ selectedPermissionIds.length }} page(s) sélectionnée(s)</span>
+        </div>
+
+        <div class="permissions-error" *ngIf="showPermissionError">
+          Veuillez sélectionner au moins une page
+        </div>
+      </div>
+    </fieldset>
+
+    <div class="action-buttons">
+      <button class="btn" type="button" (click)="resetForm()" mat-raised-button>Annuler</button>
+      <button class="btn btn-add" type="button" (click)="onSubmit()" mat-raised-button [disabled]="isSubmitting">
+        {{ isEditMode ? 'Modifier' : 'Enregistrer' }}
+      </button>
+    </div>
+  </form>
+
+</div>

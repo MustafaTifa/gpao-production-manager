@@ -1,0 +1,33 @@
+.page-layout {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.table-container {
+  flex: 1;
+  min-width: 0;
+}
+
+.form-group {
+  flex: 1;
+  min-width: 0;
+}
+
+.field {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.role-chip {
+  background-color: #e3f2fd;
+  color: #1565c0;
+  font-size: 12px;
+}
+
+.users-table {
+  width: 100%;
+}
+
+.fieldset-container {
+  flex-wrap: nowrap !important;
+}

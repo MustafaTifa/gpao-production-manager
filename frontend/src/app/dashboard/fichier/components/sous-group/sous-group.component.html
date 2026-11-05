@@ -1,0 +1,40 @@
+<h1>Sous groupe</h1>
+<form class="form-group" [formGroup]="sousGroupForm">
+    <fieldset class="fieldset-container">
+        <legend>{{action == 'create'? 'Ajouter' : 'Modifier'}} Sous groupe</legend>
+        <mat-form-field class="field" class="field" appearance="fill">
+            <mat-label>Code sous groupe</mat-label>
+            <input formControlName="codeSousGroup" matInput #input>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Designation sous groupe</mat-label>
+            <input formControlName="libelle" matInput #input>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Groupe</mat-label>
+            <input type="text" matInput formControlName="groupe" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                <mat-option *ngFor="let groupe of groupeOptions| async" [value]="groupe">{{groupe.codeGroup}} - {{groupe.libelle}}</mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Observation</mat-label>
+            <input formControlName="observation" matInput #input>
+        </mat-form-field>
+    </fieldset>
+    <div class="action-buttons">
+        <button class="btn" type="button" (click)="clearFields()" mat-raised-button>Nouveau</button>
+        <button class="btn btn-add" type="button" (click)="onSubmit()" mat-raised-button>{{action == 'create'? 'Sauvegarder' :
+            'Modifier'}}</button>
+    </div>
+</form>
+<div class="table-container">
+    <soma-table [dataSource]="dataSource" [resultsLength]="resultsLength" [columns]="columns" [actions]="actions"
+        [displayedColumns]="displayedColumns" (tableChanges)="onTableChanges($event)"
+        (onActionClicked)="onActionClicked($event)">
+
+    </soma-table>
+</div>

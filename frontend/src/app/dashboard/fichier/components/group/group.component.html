@@ -1,0 +1,30 @@
+<h1>Groupe</h1>
+<form class="form-group" [formGroup]="groupForm">
+    <fieldset class="fieldset-container">
+        <legend>{{action == 'create'? 'Ajouter' : 'Modifier'}} Groupe</legend>
+        <mat-form-field class="field" class="field" appearance="fill">
+            <mat-label>Code groupe</mat-label>
+            <input formControlName="codeGroup" matInput #input>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Designation groupe</mat-label>
+            <input formControlName="libelle" matInput #input>
+        </mat-form-field>
+
+        <mat-form-field class="field" appearance="fill">
+            <mat-label>Observation</mat-label>
+            <input formControlName="observation" matInput #input>
+        </mat-form-field>
+    </fieldset>
+    <div class="action-buttons">
+        <button class="btn" type="button" (click)="clearFields()" mat-raised-button>Nouveau</button>
+        <button class="btn btn-add" type="button" (click)="onSubmit()" mat-raised-button>{{action == 'create'? 'Sauvegarder' : 'Modifier'}}</button>
+    </div>
+</form>
+<div class="table-container">
+    <soma-table [dataSource]="dataSource" [resultsLength]="resultsLength" [columns]="columns" [actions]="actions" [displayedColumns]="displayedColumns"
+        (tableChanges)="onTableChanges($event)" (onActionClicked)="onActionClicked($event)">
+        
+    </soma-table>
+</div>

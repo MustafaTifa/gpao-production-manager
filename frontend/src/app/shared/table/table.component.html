@@ -1,0 +1,96 @@
+<table mat-table matSort (matSortChange)="sortData($event)" [dataSource]="dataSource">
+    
+    <ng-container *ngIf="multiSelect" matColumnDef="select">
+        <th mat-header-cell width="10%" *matHeaderCellDef>
+            <mat-checkbox color="primary" (change)="$event ? masterToggle() : null"
+                [checked]="selection.hasValue() && isAllSelected()"
+                [indeterminate]="selection.hasValue() && !isAllSelected()">
+            </mat-checkbox>
+        </th>
+        <td mat-cell style="padding-left: 6px;" *matCellDef="let rowselect">
+            <mat-checkbox color="primary" (click)="$event.stopPropagation()"
+                          (change)="$event ? selection.toggle(rowselect) : null"
+                          [checked]="selection.isSelected(rowselect)">
+            </mat-checkbox>
+        </td>
+    </ng-container>
+    <!-- <ng-container *ngIf="singleSelect" matColumnDef="select">
+        <th mat-header-cell width="10%" *matHeaderCellDef>
+        
+        </th>
+        <td mat-cell style="padding-left: 6px;" *matCellDef="let rowselect">
+            <mat-radio-button color="primary" (click)="radioClick(rowselect)"
+               [checked]="rowselect.checked" ></mat-radio-button>
+        </td>
+    </ng-container> -->
+    <ng-container *ngFor="let column of columns" [matColumnDef]="column.prop">
+        <ng-container>
+            <th mat-header-cell mat-sort-header [disabled]="column.sortable === false" *matHeaderCellDef>
+                {{column.label}}
+            </th>
+        </ng-container>
+        <ng-container *ngIf="column.filterable" [matColumnDef]="column.prop + 'Filters'">
+            <th mat-header-cell *matHeaderCellDef>
+                <div *ngIf="column.filterOptions?.type === 'input'" class="filter-field">
+                    <input matInput type="text" [(ngModel)]="filterIputs[column.filterOptions.prop]"
+                        (ngModelChange)="onNgModelChange(column.filterOptions)" />
+
+                    <mat-icon class="mat-icon-search" *ngIf="!filterIputs[column.filterOptions.prop]">search</mat-icon>
+                    <mat-icon class="mat-icon-search" *ngIf="filterIputs[column.filterOptions.prop]" (click)="clearFilter(column.filterOptions)">close</mat-icon>
+
+                </div>
+                <ng-container *ngIf="column.filterOptions?.type === 'select'">
+                    <mat-select [(ngModel)]="filterIputs[column.filterOptions.prop]" (ngModelChange)="onNgModelChange(column.filterOptions)">
+                        <mat-option [value]="''">
+                            Aucun
+                        </mat-option>
+                        <mat-option *ngFor="let option of column.filterOptions.selectConfig.selectOptions"
+                            [value]="option.id" [ngStyle]="{
+                            'background-color': option.backgroundColor ? option.backgroundColor : '#EBF5FA',
+                            'color': option.fontColor ? option.fontColor : '#313131'
+                          }">
+                            {{ option.label }}
+                        </mat-option>
+                    </mat-select>
+                </ng-container>
+            </th>
+        </ng-container>
+        <td style="padding-left: 15px;" [ngClass]="column.cellClass ? column.cellClass(row) : ''" mat-cell *matCellDef="let row">
+            {{column.cell(row)}}
+        </td>
+    </ng-container>
+    <ng-container *ngIf="!hideActions" matColumnDef="action">
+        <th mat-header-cell width="5%" *matHeaderCellDef> Action </th>
+        <td mat-cell width="5%" *matCellDef="let element" (click)="$event.stopPropagation()">
+            <div style="display: flex;">
+                <button [matTooltip]="action.tooltip" *ngFor="let action of actions" mat-icon-button>
+                    <mat-icon (click)="onAction(action,element)">{{action.icon}}</mat-icon>
+                </button>
+            </div>
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="empty">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+    
+    <tr class="soma-table__header-row" mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <ng-container *ngIf="NbrOfcolumnWithFilter > 0">
+        <tr mat-header-row class="vd-table__filter-row" *matHeaderRowDef="filterColumns"></tr>
+    </ng-container>
+
+    <tr mat-row (click)="onAction('update',row)" *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<div *ngIf="!hidePagination" class="soma-table__footer">
+    <div *ngIf="dataSource?.length; else noData" class="">
+        <span>
+            Total {{ resultsLength }}
+        </span>
+      </div>
+      <ng-template #noData>
+        <span> Aucunes données</span>
+      </ng-template>
+      <mat-paginator #paginator [hidden]="false" [length]="resultsLength" [pageIndex]="0"
+          [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" (page)="handlePageEvent($event)">
+      </mat-paginator>
+</div>

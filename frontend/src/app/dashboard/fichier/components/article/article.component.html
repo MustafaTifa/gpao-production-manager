@@ -1,0 +1,152 @@
+<h1>Article</h1>
+<mat-tab-group mat-align-tabs="start" (selectedIndexChange)="tabChanges($event)">
+    <mat-tab label="PARAMETRE">
+
+        <form style="padding-top: 15px;" class="form-group" [formGroup]="articleForm">
+            <fieldset class="fieldset-container">
+                <legend>{{action == 'create'? 'Ajouter' : 'Modifier'}} Article</legend>
+                <mat-form-field class="field" class="field" appearance="fill">
+                    <mat-label>Identifiant</mat-label>
+                    <input formControlName="identifiant" matInput #input>
+                </mat-form-field>
+
+                <mat-form-field class="field" class="field" appearance="fill">
+                    <mat-label>Identifiant Somatel</mat-label>
+                    <input formControlName="identifiantSomatel" matInput #input>
+                </mat-form-field>
+        
+                <mat-form-field class="field" appearance="fill">
+                    <mat-label>Designation FR</mat-label>
+                    <input formControlName="libelleFR" matInput #input>
+                </mat-form-field>
+
+                <mat-form-field class="field" appearance="fill">
+                    <mat-label>Designation EN</mat-label>
+                    <input formControlName="libelleEN" matInput #input>
+                </mat-form-field>
+
+                <mat-form-field class="field" appearance="fill">
+                    <mat-label>Designation GER</mat-label>
+                    <input formControlName="libelleGER" matInput #input>
+                </mat-form-field>
+        
+                <mat-form-field class="field" appearance="fill">
+                    <mat-label>Type</mat-label>
+                    <input type="text" matInput formControlName="type" [matAutocomplete]="autoType">
+                    <mat-autocomplete #autoType="matAutocomplete" [displayWith]="displayFn.bind(this,'type')">
+                        <mat-option *ngFor="let type of typeOptions| async" [value]="type">{{type.codeType}} - {{type.libelle}}</mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+
+                <mat-form-field class="field" appearance="fill">
+                    <mat-label>Groupe</mat-label>
+                    <input type="text" matInput formControlName="groupe" [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this,'groupe')">
+                        <mat-option *ngFor="let groupe of groupeOptions| async" [value]="groupe">{{groupe.codeGroup}} - {{groupe.libelle}}</mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+
+                <mat-form-field class="field" appearance="fill">
+                    <mat-label>Sous-Groupe</mat-label>
+                    <input type="text" matInput formControlName="sousGroupe" [matAutocomplete]="autosousGroupe">
+                    <mat-autocomplete #autosousGroupe="matAutocomplete" [displayWith]="displayFn.bind(this,'sousGroupe')">
+                        <mat-option *ngFor="let sousGroupe of sousGroupeOptions| async" [value]="sousGroupe">{{sousGroupe.codeSousGroup}} - {{sousGroupe.libelle}}</mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+                
+                <mat-form-field appearance="fill">
+                    <mat-label>Nature</mat-label>
+                    <mat-select formControlName="nature">
+                      <mat-option *ngFor="let natrue of natures" [value]="natrue.value">
+                        {{natrue.name}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <!-- <mat-form-field class="example-form-field" appearance="fill">
+                    <mat-label>Liste des engins</mat-label>
+                    <input matInput type="text" formControlName="engins">
+                    <button matSuffix mat-icon-button type="button" (click)="showEngins()">
+                      <mat-icon>add_circle</mat-icon>
+                    </button>
+                </mat-form-field> -->
+
+                <mat-form-field class="field" appearance="fill">
+                    <mat-label>Liste des engins</mat-label>
+                    <input [readonly]="true" matInput
+                        (keydown)="disableInput($event)"
+                        (click)="disableInput($event)"
+                        type="text" 
+                        formControlName="engins" [matAutocomplete]="autoengin">
+                    <button matSuffix mat-icon-button type="button" (click)="showEngins()">
+                        <mat-icon>add_circle</mat-icon>
+                    </button>
+                    <mat-autocomplete #autoengin="matAutocomplete" [displayWith]="displayFn.bind(this,'engin')">
+                        <!-- <mat-option *ngFor="let sousGroupe of sousGroupeOptions| async" [value]="sousGroupe">{{sousGroupe.codeSousGroup}} - {{sousGroupe.libelle}}</mat-option> -->
+                    </mat-autocomplete>
+                </mat-form-field>
+
+                <mat-form-field class="field" appearance="fill">
+                    <mat-label>Observation</mat-label>
+                    <input formControlName="observation" matInput #input>
+                </mat-form-field>
+
+                <mat-form-field class="field" appearance="fill">
+                    <mat-label>N° Dessin</mat-label>
+                    <input formControlName="numberDessin" matInput #input>
+                </mat-form-field>
+
+                <mat-form-field class="field" appearance="fill">
+                    <mat-label>REF Fournisseur</mat-label>
+                    <input formControlName="fournisseurREF" matInput #input>
+                </mat-form-field>
+
+                <mat-form-field *ngIf="nature == 'Matiere' || nature == 'Piece_Unitaire'" class="field" appearance="fill">
+                    <mat-label>{{nature == 'Matiere' ? 'Facteur' : 'Taux de chute'}}</mat-label>
+                    <input formControlName="facteurTaux" matInput #input>
+                    <mat-icon *ngIf="nature == 'Piece_Unitaire'" matSuffix>percent</mat-icon>
+                    <span *ngIf="nature == 'Matiere'" matSuffix>Kg</span>
+                </mat-form-field>
+
+                <mat-form-field class="field" appearance="fill">
+                    <mat-label>Sortie Unité</mat-label>
+                    <input formControlName="sortieUnit" matInput #input>
+                </mat-form-field>
+
+                <mat-form-field class="field" appearance="fill">
+                    <mat-label>Version</mat-label>
+                    <input formControlName="version" matInput #input>
+                </mat-form-field>
+
+                <mat-form-field class="field" appearance="fill">
+                    <mat-label>Date MAJ</mat-label>
+                    <input formControlName="lastModified" matInput #input>
+                </mat-form-field>
+            </fieldset>
+            <div class="action-buttons">
+                <button class="btn" type="button" (click)="clearFields()" mat-raised-button>Nouveau</button>
+                <button class="btn btn-add" type="button" (click)="onSubmit()" [disabled]="!articleForm.valid" mat-raised-button>{{action == 'create'? 'Sauvegarder' : 'Modifier'}}</button>
+            </div>
+        </form>
+        <div class="table-container">
+            <soma-table [dataSource]="dataSource" [resultsLength]="resultsLength" [columns]="columns" [actions]="actions"
+                [displayedColumns]="displayedColumns" (tableChanges)="onTableChanges($event)"
+                (onActionClicked)="onActionClicked($event)">
+        
+            </soma-table>
+        </div>
+
+    </mat-tab>
+    <mat-tab *ngIf="hideNomenclature" [disabled]='!selectedArticle' label="NOMENCLATURE">
+        <app-nomenclature [selectedArticle]="selectedArticle"></app-nomenclature>
+    </mat-tab>
+    <mat-tab *ngIf="hideNomenclature" [disabled]='!selectedArticle' label="GAMME">
+        <app-gamme [selectedArticle]="selectedArticle"></app-gamme>
+    </mat-tab>
+    <mat-tab [disabled]='!selectedArticle' label="GED">
+        <app-ged [selectedArticle]="selectedArticle"></app-ged>
+    </mat-tab>
+    <mat-tab [disabled]='!selectedArticle' label="HISTORIQUE">
+        <app-historique [selectedArticle]="selectedArticle"></app-historique>
+    </mat-tab>
+  </mat-tab-group>

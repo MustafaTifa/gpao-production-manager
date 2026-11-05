@@ -1,0 +1,26 @@
+<!-- <mat-drawer-container style="background-color: #eff2f5 !important;" autosize>
+    <mat-drawer-content>
+        <div style="display: flex;flex-direction: row;gap: 15px">
+            <div style="transition: width 0.3s ease;">
+                <left-menu></left-menu>
+            </div>
+            <mat-card id="mainCard" style="flex-grow: 1;">
+                <mat-card-content>
+                    <router-outlet></router-outlet>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </mat-drawer-content>
+</mat-drawer-container> -->
+<div class="main-container">
+    <div class="left-menu" style="transition: width 0.3s ease;">
+        <left-menu></left-menu>
+    </div>
+    <div class="content">
+        <div class="scrollable-card">
+            <!-- <mat-card-content> -->
+                <router-outlet></router-outlet>
+            <!-- </mat-card-content> -->
+        </div>
+    </div>
+</div>

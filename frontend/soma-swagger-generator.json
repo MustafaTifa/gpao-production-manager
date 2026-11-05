@@ -1,0 +1,349 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "OpenAPI definition",
+        "version": "v0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8088",
+            "description": "Generated server url"
+        }
+    ],
+    "tags": [
+        {
+            "name": "SuiviOF Travailleur Management",
+            "description": "Association between SuiviOF and Travailleur"
+        }
+    ],
+    "paths": {
+        "/api/v1/suivi_of_travailleur": {
+            "put": {
+                "tags": [
+                    "SuiviOF Travailleur Management"
+                ],
+                "operationId": "update",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SuiviOFTravailleur"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SuiviOFTravailleur"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "SuiviOF Travailleur Management"
+                ],
+                "operationId": "add",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SuiviOFTravailleur"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SuiviOFTravailleur"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/suivi_of_travailleur/{id}": {
+            "get": {
+                "tags": [
+                    "SuiviOF Travailleur Management"
+                ],
+                "operationId": "getById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SuiviOFTravailleur"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "SuiviOF Travailleur Management"
+                ],
+                "operationId": "delete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/v1/suivi_of_travailleur/travailleur/{travailleurId}": {
+            "get": {
+                "tags": [
+                    "SuiviOF Travailleur Management"
+                ],
+                "operationId": "getAllByTravailleur",
+                "parameters": [
+                    {
+                        "name": "travailleurId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/SuiviOFTravailleur"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/suivi_of_travailleur/suivi_of/{suiviOfId}": {
+            "get": {
+                "tags": [
+                    "SuiviOF Travailleur Management"
+                ],
+                "operationId": "getAllBySuiviOf",
+                "parameters": [
+                    {
+                        "name": "suiviOfId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/SuiviOFTravailleur"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "CFI": {
+                "type": "object",
+                "properties": {
+                    "libelle": {
+                        "type": "string"
+                    },
+                    "observation": {
+                        "type": "string"
+                    },
+                    "codeCFI": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "SuiviOF": {
+                "type": "object",
+                "properties": {
+                    "idOf": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "idWorkstation": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "idArticle": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "idsArticles": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    "pos": {
+                        "type": "string"
+                    },
+                    "executionTime": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "operation": {
+                        "type": "string"
+                    },
+                    "operationDetail": {
+                        "type": "string"
+                    },
+                    "preparationTime": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "gs": {
+                        "type": "string"
+                    },
+                    "startDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "endDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "travailleurs": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SuiviOFTravailleur"
+                        }
+                    },
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "SuiviOFTravailleur": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "suiviOf": {
+                        "$ref": "#/components/schemas/SuiviOF"
+                    },
+                    "travailleur": {
+                        "$ref": "#/components/schemas/Travailleur"
+                    },
+                    "quantite": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "tempEffectif": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "Travailleur": {
+                "type": "object",
+                "properties": {
+                    "libelle": {
+                        "type": "string"
+                    },
+                    "observation": {
+                        "type": "string"
+                    },
+                    "codeTravailleur": {
+                        "type": "string"
+                    },
+                    "workstation": {
+                        "$ref": "#/components/schemas/Workstation"
+                    },
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "Workstation": {
+                "type": "object",
+                "properties": {
+                    "libelle": {
+                        "type": "string"
+                    },
+                    "observation": {
+                        "type": "string"
+                    },
+                    "codeWorkstation": {
+                        "type": "string"
+                    },
+                    "cfi": {
+                        "$ref": "#/components/schemas/CFI"
+                    },
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            }
+        }
+    }
+}

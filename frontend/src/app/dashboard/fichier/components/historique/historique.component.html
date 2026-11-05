@@ -1,0 +1,20 @@
+<mat-tab-group class="historique-tab" (selectedIndexChange)="tabChanges($event)" mat-align-tabs="start">
+    <mat-tab label="Article">
+        <div class="table-container">
+            <soma-table [dataSource]="dataSource"
+                        [columns]="columns" 
+                        [displayedColumns]="displayedColumns">
+            </soma-table>
+        </div>
+
+    </mat-tab>
+    <mat-tab label="Nomenclature">
+        Nomenclature
+    </mat-tab>
+    <mat-tab label="Gamme">
+        Gamme
+    </mat-tab>
+    <mat-tab label="GED">
+        GED
+    </mat-tab>
+  </mat-tab-group>

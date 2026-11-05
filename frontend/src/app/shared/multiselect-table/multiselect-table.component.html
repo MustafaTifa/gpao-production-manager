@@ -1,0 +1,26 @@
+<div class="container">
+    <h2>{{ data.title }}</h2>
+    <div class="table-container">
+        <soma-table 
+            [dataSource]="dataSource" 
+            [resultsLength]="resultsLength" 
+            [columns]="data.columns"
+            [displayedColumns]="data.displayedColumns"
+            [multiSelect]="data.multiSelect"
+            [singleSelect]="data.singleSelect"
+            [hideActions]="true"
+            [previewMode]="data.previewMode"
+            [hidePagination]="data.hidePagination"
+            (tableChanges)="onTableChanges($event)"
+            (selectionChanges)="selectionChanges($event)"
+            (onActionClicked)="onActionClicked($event)"
+        >
+    
+        </soma-table>
+    </div>
+    <div class="buttons">
+        <button class="btn" type="button" mat-dialog-close mat-raised-button>Annuler</button>
+        <button *ngIf="!data.singleSelect" class="btn btn-add" type="button" [mat-dialog-close]="itemsSelected" mat-raised-button>Ajouter</button>
+        <button *ngIf="data.fromUnitPrice" class="btn btn-add" type="button" [mat-dialog-close]="itemsSelected" mat-raised-button>Valider</button>
+    </div>
+</div>

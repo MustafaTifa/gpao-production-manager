@@ -1,0 +1,48 @@
+# Docker Compose reference: https://docs.docker.com/compose/compose-file/
+# Usage: docker compose --env-file .env up --build
+# Note: build the backend JAR first -> cd backend && ./mvnw clean package -DskipTests
+
+services:
+
+  db:
+    image: postgres:16-alpine
+    container_name: gpao-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-somatelliebherr}
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  # Spring Boot REST API (runs with the "prod" profile)
+  backend-app:
+    build: ./backend
+    container_name: backend-app
+    depends_on:
+      - db
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-somatelliebherr}
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-86400000}
+      FILE_UPLOAD_DIR: /app/uploads
+    volumes:
+      - uploads:/app/uploads
+    ports:
+      - "8888:8080"
+
+  # Angular SPA served by Nginx
+  frontend-app:
+    build: ./frontend
+    container_name: frontend-app
+    depends_on:
+      - backend-app
+    ports:
+      - "4100:80"
+
+volumes:
+  db-data:
+  uploads:
