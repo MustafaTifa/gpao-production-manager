@@ -189,7 +189,7 @@ gpao-production-manager/
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/<your-username>/gpao-production-manager.git
+git clone https://github.com/MustafaTifa/gpao-production-manager.git
 cd gpao-production-manager
 
 # 2. Create your local environment file
@@ -352,9 +352,9 @@ curl -X POST http://localhost:8088/api/auth/login \
 |-------|----------|
 | ![Login](docs/screenshots/login.png) | ![Articles](docs/screenshots/articles.png) |
 
-| Work order tracking | Production tracking |
-|---------------------|---------------------|
-| ![Work order tracking](docs/screenshots/of-tracking.png) | ![Production tracking](docs/screenshots/production-tracking.png) |
+| Subcontracted work order tracking | Production tracking & wage vouchers |
+|-----------------------------------|-------------------------------------|
+| ![Subcontracted work order tracking](docs/screenshots/of-extern-tracking.png) | ![Production tracking](docs/screenshots/production-tracking.png) |
 
 ---
 
@@ -373,7 +373,7 @@ curl -X POST http://localhost:8088/api/auth/login \
 
 ## Author
 
-**Mustafa Derouaz** — Full Stack Developer (Angular / Spring Boot)
+**Moustapha Yahia Derouaz** — Full Stack Developer (Angular / Spring Boot)
 
-- GitHub: [@&lt;your-username&gt;](https://github.com/<your-username>)
-- LinkedIn: [linkedin.com/in/&lt;your-profile&gt;](https://www.linkedin.com/in/<your-profile>)
+- GitHub: [@MustafaTifa](https://github.com/MustafaTifa)
+- LinkedIn: [Moustapha Yahia Derouaz](https://www.linkedin.com/in/moustapha-yahia-derouaz-00943b193/)
